@@ -151,7 +151,8 @@
 		"Invalid characters in display, incorrectly formatted operators such as shift ops, or misspelled trig functions.",//1
 		"Can't divide by zero.",//2
 		"Can't handle complex numbers such as (-1)^(1/2).",//3
-		"Incorrectly formatted x^y function."//4
+		"Incorrectly formatted x^y function.",//4
+		"Result is Infinity"//5
 	],//end of compute.general_error[]
 	
 	/*
@@ -175,6 +176,10 @@
 				{
 					return 0;
 				}
+				else if(!this.test.check_denominator(str))
+				{
+					return false;
+				}
 				else if(this.formatEquation(str))
 				{
 					result=this.formatEquation(str);
@@ -182,7 +187,7 @@
 					{
 						if(this.showErrors)
 						{
-							alert(this.general_error[2]);
+							alert(this.general_error[5]);
 						}
 						return false;
 					}
@@ -287,6 +292,58 @@
 			else if(str.charAt(c+1)!='<')
 				return false;
 			return this.check_lessthan(str.substring(c+2));
+		},
+		check_denominator:function(str){//check for instances of x/0 and flag them
+			var denominator;
+			if(str.indexOf('/')==-1)
+			{
+				return true
+			}
+			else if(this.regex(str.charAt(str.indexOf('/')+1),/[\+\-]/i))//accomodate for x^-y to Math.pow(x,-y) negative exponents
+			{
+				i=str.indexOf('/')+2;
+			}
+			else
+			{
+				i=str.indexOf('/')+1;
+			}
+			exit=false;
+			j=0;
+			do
+			{
+				switch(str.charAt(i))
+				{
+					case '(':
+						j++;
+						break;
+					case ')':
+						j--;
+						break;
+				}
+				if(this.regex(str.charAt(i),/[\+\-\*\/\)><%]/i)&&j<=0)
+				{
+					denominator=(str.charAt(str.indexOf('/')+1)=='(')?str.substring(str.indexOf('/')+1,i+1):(str.substring(str.indexOf('/')+1,i+1).match(/^[lpesincotag]{2,3}\(.*/i))?str.substring(str.indexOf('/')+1,i+1):str.substring(str.indexOf('/')+1,i);//this groups all of the characters after the / together and stores it in denominator variable
+					exit=true;
+				}
+				i++;
+			}
+			while(!exit&&i<str.length);
+			if(!exit)
+			{
+				denominator=str.substring(str.indexOf('/')+1,str.length);
+			}
+			if(compute.result(denominator)=='0')
+			{
+				if(compute.showErrors)
+				{
+					alert(compute.general_error[2]);
+				}
+				return false;
+			}
+			else
+			{
+				return this.check_denominator(str.substring(str.indexOf('/')+1));
+			}
 		},
 		
 		//these functions are used by this.checktrig()
@@ -427,7 +484,6 @@
 			}
 			return this.check_o(str.substring(c+1));//recursive check_o
 		}
-		
 	},//end of compute.test{}
 	
 	/*
@@ -462,7 +518,7 @@
 						j--;
 						break;
 				}
-				if(this.test.regex(str.charAt(i),/[\+\-\*\/\(\)><%]/i)&&j<=0)
+				if(this.test.regex(str.charAt(i),/[\+\-\*\/><%,\(]/i)&&j<=0)
 				{
 					results[0]=(j<0||str.charAt(i)!='(')?str.substring(i+1,str.indexOf('^')):str.substring(i,str.indexOf('^'));//this groups all of the characters before the ^ together and stores it in the results array
 					exit=true;
@@ -489,7 +545,7 @@
 			}
 			else
 			{
-				i=str.indexOf('^');
+				i=str.indexOf('^')+1;
 			}
 			exit=false;
 			j=0;
@@ -504,10 +560,9 @@
 						j--;
 						break;
 				}
-				if(this.test.regex(str.charAt(i),/[\+\-\*\/\(\)><%]/i)&&j<=0)
+				if(this.test.regex(str.charAt(i),/[\+\-\*\/><%\)]/i)&&j<=0)
 				{
-					results[1]=(str.charAt(str.indexOf('^')+1)=='(')?str.substring(str.indexOf('^')+1,i+1):str.substring(str.indexOf('^')+1,i);//this groups all of the characters after the ^ together and stores it in the results array
-					//alert("results[1]="+results[1]+"\ni="+i+"\ncharAt(i)"+str.charAt(i)+"\nj="+j);
+					results[1]=(str.charAt(str.indexOf('^')+1)=='(')?str.substring(str.indexOf('^')+1,i+1):(str.substring(str.indexOf('^')+1,i+1).match(/^[lpesincotag]{2,3}\(.*/i))?str.substring(str.indexOf('^')+1,i+1):str.substring(str.indexOf('^')+1,i);
 					exit=true;
 				}
 				i++;
@@ -525,6 +580,9 @@
 				}
 				return false;
 			}//end of acounting for the y part of x^y
+			
+			//return results[0];
+			
 			if(results[0]=='e')//check for exponential function e^x
 			{
 				str=eval("str.replace('"+results[0]+"^"+results[1]+"', 'Math.exp("+results[1]+")')");
@@ -550,7 +608,7 @@
 		//handle trig functions
 		str=str.replace(/log\(/gi,"this.rlog(");
 		str=str.replace(/pi/gi,"Math.PI");
-		str=str.replace(/ln\(/gi,"Math.log(");
+		str=str.replace(/ln\(/gi,"this.ln(");
 		str=str.replace(/tan\(/gi,"this.tan(");
 		str=str.replace(/cos\(/gi,"this.cos(");
 		str=str.replace(/sin\(/gi,"this.sin(");
@@ -712,12 +770,27 @@
 			}
 		}
 	},//end of compute.acos()
+	ln:function(str){//calculate the natural log of a number
+		if(this.result(str)<=0)
+		{
+			if(this.showErrors)
+			{
+				alert("ln(x)=Undefined or Negative Infinity\nOutside of domain.\nln(x) Domain: {x|x>0}");
+			}
+			throw "ln_trig_error";
+		}
+		else
+		{
+			return Math.log(this.result(str));
+		}
+
+	},
 	rlog:function(str){//calculate the root base 10 logarithmic function.
 		if(this.result(str)<=0)
 		{
 			if(this.showErrors)
 			{
-				alert("ln(x)=Undefined or Negative Infinity\nOutside of domain.\nlog(x) Domain: {x|x>0}");
+				alert("log(x)=Undefined or Negative Infinity\nOutside of domain.\nlog(x) Domain: {x|x>0}");
 			}
 			throw "rlog_trig_error";
 		}
@@ -942,22 +1015,14 @@
   */
 
 /*
- * ChangeLog
- * 05/06/2010 is when initial creation of this object began.
- * 05/17/2010 is when the public source of this object is released.
- * 
- * TODO: Don't forget to convert all of the debug alerts and other alerts according to the settings.
- * Failed tests
- * 0/0
- * 1^2^3^4
- * sin(0)^2
- * 
- * Solve 1^2^3^4 by autogrouping through recursion.  See the following lines as recursion goes through it's steps.
- * 1^(2^3^4) goes to Math.pow(1,(2^3^4))
- * 1^(2^(3^4)) goes to Math.pow(1,(Math.pow(2,(3^4))))
- * 1^(2^(3^(4))) goes to Math.pow(1,(Math.pow(2,(Math.pow(3,(4))))))
- * 
- * Come up with a better divisble by zero analyzer so that it accounts for all cases of dividing by zero and not dependent on the JavaScript engine.
- * var str="45+3/0-(2/0)+4/(1-1)+4"
- * str.split('/') and then analyze the array for zero denominators
+ChangeLog
+05/06/2010 is when initial creation of this object began.
+05/17/2010 is when the public source of this object is released.
+
+v0.1-v0.2 10/02/2010 (mm/dd/yyyy)
+1.	Fixed bug where x/0 was not correctly handled which led to equation result inconsistencies.  Can't divide by zero.
+2.	Fixed bug where sin(0)^2 was not correctly handled by formatEquation function giving and incorrect sinMath.pow((0),2) function.
+3.	Fixed bug where domain of ln(x) was not properly handled producing and inconsistent NaN result from compute.result function.
+4.	Fixed bug where 2^3^2 (multiple levels of powers) were not correctly calculating.
+
  */

@@ -1,0 +1,9 @@
+ChangeLog
+05/06/2010 is when initial creation of this object began.
+05/17/2010 is when the public source of this object is released.
+ 
+v0.1-v0.2 10/02/2010 (mm/dd/yyyy)
+1.	Fixed bug where x/0 was not correctly handled which led to equation result inconsistencies.  Can't divide by zero.
+2.	Fixed bug where sin(0)^2 was not correctly handled by formatEquation function giving and incorrect sinMath.pow((0),2) function.
+3.	Fixed bug where domain of ln(x) was not properly handled producing and inconsistent NaN result from compute.result function.
+4.	Fixed bug where 2^3^2 (multiple levels of powers) was not correctly calculating 2^(3^(2)).
