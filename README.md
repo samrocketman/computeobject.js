@@ -1,6 +1,6 @@
 # JavaScript Human Readable Math Library
 
-* Project Status: Abandoned in 2010
+* Project Status: Abandoned in 2010 migrated from [SourceForge][sf.net]
 
 This library converts human readable equation strings into JavaScript function
 calls.  This is one of my earliest projects that I've migrated from sourceforge
@@ -164,3 +164,5 @@ applications.  A small price to pay for such a great library!
  *             when set to true compute.d2b(45) returns 2D instead of 2d.
  */
 ```
+
+[sf.net]: https://sourceforge.net/projects/webtechtools/files/JavaScript%20Human%20Readable%20Math%20Library/
