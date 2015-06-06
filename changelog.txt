@@ -16,14 +16,14 @@ v0.3-0.4 10/28/2010
 
 v0.2-0.3 10/20/2010
 1.	Fixed bug where (200e-6)/(2.2*(10e3)) was a false positive of an improper equation.  Regular expression for
-	compute.test.e() was modified to fix bug.  Also 4e-3 and 4e+3 were false positives for flagging an improper 
+	compute.test.e() was modified to fix bug.  Also 4e-3 and 4e+3 were false positives for flagging an improper
 	equation.
 
 v0.1-v0.2 10/02/2010
-1.	Fixed bug where x/0 was not correctly handled which led to equation result inconsistencies.  Can't divide 
+1.	Fixed bug where x/0 was not correctly handled which led to equation result inconsistencies.  Can't divide
 	by zero.
-2.	Fixed bug where sin(0)^2 was not correctly handled by formatEquation function giving and incorrect 
+2.	Fixed bug where sin(0)^2 was not correctly handled by formatEquation function giving and incorrect
 	sinMath.pow((0),2) function.
-3.	Fixed bug where domain of ln(x) was not properly handled producing and inconsistent NaN result from 
+3.	Fixed bug where domain of ln(x) was not properly handled producing and inconsistent NaN result from
 	compute.result function.
 4.	Fixed bug where 2^3^2 (multiple levels of powers) were not correctly calculating.

@@ -5,22 +5,22 @@
  * @link http://www.sourceforge.net/projects/webtechtools/
  * @created 05/06/2010
  * @version 0.5
- * @description 
+ * @description
  *     compute object is an interpreter.  It takes a mathematical string and formats it so that the JavaScript math engine
  *     can process it, calculating a result.  I like to refer to the mathematical string as containing human readable math
- *     computational functions such as pi, tan, and exponentials x^y.  This is a single object so that integration into 
+ *     computational functions such as pi, tan, and exponentials x^y.  This is a single object so that integration into
  *     web applications is seamless and simple.
- *     
+ *
  *     Examples of human readable computations this library can handle that are unique to this library:
  *         compute.result("2^3") returns 8
  *         compute.result("16^(1/2)") returns 4
  *
  *     See the full documentation and all possible human readable functions in the non-compact version of the compute object.
- *     
+ *
  *     If you are using the value of an input element then it is best to convert the value to a string before computing the
  *     result.  For example
  *         document.getElementById("myElementId").value = compute.result(document.getElementById("myElementId").value.toString());
- * 
+ *
  * @documentation
  * @FUNCTION documentation format...
  *     compute.function(argument); argument types separated by commas; return type
@@ -28,7 +28,7 @@
  *             description of the functions uses.
  *         Example usage:
  *             compute.function(someargument) returns somevalue
- * 
+ *
  *     compute.result(str); str typeof="string"; returns typeof="number"
  *         Description:
  *             This is the main computational parser.  Access the main functionality of the math library through this function.
@@ -45,7 +45,7 @@
  *                 % modulo
  *                 >> shift right
  *                 << shift left
- *                 
+ *
  *         Example usage:
  *             compute.result("2^3") returns 8
  *             compute.result("16^(1/2)") returns 4
@@ -55,7 +55,7 @@
  *             compute.result("2e3") returns 2000
  *             compute.result("45*2^2") returns 180
  *             compute.result("45<<2") returns 180
- *             
+ *
  *     compute.changeSign(str); str typeof="string"; returns typeof="string" or returns false
  *         Description:
  *             Takes a string equation and returns that same equation as a string wrapped with a negative value.  Toggles.
@@ -64,7 +64,7 @@
  *             compute.changeSign("5") returns "-5"
  *             compute.changeSign("-(5+5)") returns "5+5"
  *             compute.changeSign("5+5") returns "-(5+5)"
- * 
+ *
  *     compute.roundFloat(num,float); num typeof="number",float typeof="number"; returns typeof="number"
  *         Description:
  *             Round the float of a number both forwards and backwards.
@@ -72,14 +72,14 @@
  *             compute.roundFloat(125.125,1) returns 125.1
  *             compute.roundFloat(125.125,-1) returns 130
  *             compute.roundFloat(125.125,0) returns 125
- * 
+ *
  *     compute.test.regex(str,re); str typeof="string",re typeof="object"; returns typeof="boolean"
  *         Description:
  *             Test the string against a general regular expression, character by character.
  *         Example usage:
  *             compute.test.regex("asDf123",/[0-9a-z]/i) returns true
  *             compute.test.regex("asDf123",/[0-9a-z]/) returns false
- *     
+ *
  *     compute.d2b(num,base); num typeof="number",base typeof="number";returns typeof="string" or returns false
  *         Description:
  *             Converts a Base10 Decimal to any base number up to Base36.  If conversion fails then it returns false.
@@ -88,21 +88,21 @@
  *         Example usage:
  *             compute.d2b(45,16) returns 2D
  *             compute.d2b(45,8) returns 55
- *             
+ *
  *     compute.b2d(num,base); num typeof="string",base typeof="number";returns typeof="string" or returns false
  *         Description:
  *             Converts any base number up to Base36 to a Base10 Decimal.  If conversion fails then it returns false.
  *         Example usage:
  *             compute.b2d("2D",16) returns 45
  *             compute.b2d("55",8) returns 45
- *             
+ *
  *     compute.groupEquation(str); str typeof="string"; returns typeof="string" or returns false
  *         Description:
  *             Takes a string equation and returns that same equation as a string wrapped with parens.  Toggles.
  *         Example usage:
  *             compute.groupEquation("5+5") returns "(5+5)"
  *             compute.groupEquation("(5+5)") returns "5+5"
- * 
+ *
  * @SETTINGS documentation format
  *     compute.setting; typeof; default value
  *         Description:
@@ -110,30 +110,30 @@
  *         Example usage:
  *             compute.setting=true
  *             compute.setting returns true
- *     
+ *
  *     compute.caseInsensitive; typeof="boolean"; true
  *         Description:
  *             If you don't want the equations to be case sensitive then set this option to true.  Otherwise set to
  *             false.
- *     
+ *
  *     compute.debug; typeof="boolean"; false
  *         Description:
  *             Alerts exceptions for library development purposes.
- *     
+ *
  *     compute.degreesMode; typeof="boolean"; true
  *         Description:
- *             When working with trig functions this determines whether they're handled as degrees or radians.  When 
+ *             When working with trig functions this determines whether they're handled as degrees or radians.  When
  *             set to true then the trig functions handle the trig quantities as degrees.  False will handle the trig
  *             quantities as radians.
- *     
+ *
  *     compute.showErrors; typeof="boolean"; true
  *         Description:
  *             Display alert box errors to assist the user with troubleshooting their equation for computation.  When
  *             set to true then it displays the alert boxes.  Set to false to quiet the alerts
- *     
+ *
  *     compute.upperCaseBase; typeof="boolean"; true
  *         Description:
- *             When doing a base conversion equation return the letters in all caps when set to true.  For example 
+ *             When doing a base conversion equation return the letters in all caps when set to true.  For example
  *             when set to true compute.d2b(45) returns 2D instead of 2d.
  */
 
@@ -151,7 +151,7 @@
 	degreesMode: true,//end of compute.degreesMode
 	showErrors: true,//end of compute.showErrors
 	upperCaseBase: true,//end of compute.upperCaseBase
-	
+
  	/*
  	 * This is a list of global object values such as arrays, constants, etc.
  	 */
@@ -163,7 +163,7 @@
 		"Incorrectly formatted x^y function.",//4
 		"Result is Infinity"//5
 	],//end of compute.general_error[]
-	
+
 	/*
 	 * The result function is used the most in this library.  It is the root function which accesses all other functions to compute the result of the equation.
 	 */
@@ -204,7 +204,7 @@
 					{
 						return eval(result);
 					}
-						
+
 				}
 				else
 				{
@@ -241,7 +241,7 @@
 		}
 		return false;
 	},//end of compute.result()
-	
+
  	/*
  	 * This test object is for testing the format of the equation to ensure there are no syntax errors
  	 */
@@ -354,7 +354,7 @@
 				return this.check_denominator(str.substring(str.indexOf('/')+1));
 			}
 		},//end of compute.test.check_denominator()
-		
+
 		//these functions are used by this.checktrig()
 		pi:function(str){
 			var c=str.indexOf('p');
@@ -366,7 +366,7 @@
 			{
 				return false;
 			}
-			
+
 			return this.pi(str.substring(c+2));//recursive pi
 		},//end of compute.test.pi()
 		logs:function(str){//tests for ln() and log() functions
@@ -403,7 +403,7 @@
 			{
 				return false;
 			}
-			
+
 			return (str.charAt(c-2)=='c')?this.sin(str.substring(c+2)):this.sin(str.substring(c+4));//recursive sin and ensure not taking a substring of cos( incorrectly
 		},//end of compute.test.sin()
 		cos:function(str){
@@ -416,7 +416,7 @@
 			{
 				return false;
 			}
-			
+
 			return this.cos(str.substring(c+4));//recursive cos
 		},//end of compute.test.cos()
 		tan:function(str){
@@ -429,7 +429,7 @@
 			{
 				return false;
 			}
-			
+
 			return this.tan(str.substring(c+4));//recursive tan
 		},//end of compute.test.tan()
 		check_a:function(str){//tests for acos, asin, and atan
@@ -442,7 +442,7 @@
 			{
 				return false;
 			}
-			
+
 			return this.check_a(str.substring(c+1));//recursive check_a
 		},//end of compute.test.check_a()
 		check_g:function(str){//check every 'g' in the equation and ensure it is part of a function such as log
@@ -494,7 +494,7 @@
 			return this.check_o(str.substring(c+1));//recursive check_o
 		}//end of compute.test.check_o()
 	},//end of compute.test{}
-	
+
 	/*
 	 * The formatEquation function is used by the result function.  This takes the human readable function and converts it into a format the JavaScript engine can compute.
 	 * This function is the core interpreter for the whole operation which makes this library useful.
@@ -589,9 +589,9 @@
 				}
 				return false;
 			}//end of acounting for the y part of x^y
-			
+
 			//return results[0];
-			
+
 			if(results[0]=='e')//check for exponential function e^x
 			{
 				str=eval("str.replace('"+results[0]+"^"+results[1]+"', 'Math.exp("+results[1]+")')");
@@ -613,7 +613,7 @@
 				return this.formatEquation(str);
 			}
 		}//end of handle x^y
-		
+
 		//handle trig functions
 		str=str.replace(/log\(/gi,"this.rlog(");
 		str=str.replace(/pi/gi,"Math.PI");
@@ -623,10 +623,10 @@
 		str=str.replace(/sin\(/gi,"this.sin(");
 		str=str.replace(/athis\./gi,"this.a");
 		//end of handle trig
-		
+
 		return str;
 	},//end of compute.formatEquation()
-	
+
 	/*
 	 * The roundFloat function is designed to round the float of a number both forwards and backwards.  For example compute.roundFloat(125.125,1) returns
 	 * 125.1 and compute.roundFloat(125.125,-1) returns 130.
@@ -644,7 +644,7 @@
 		};
 		return (float_val<0)?Math.round(num/comp)*comp:Math.round(num*comp)/comp;
 	},//end of compute.roundFloat()
-	
+
 	/*
 	 * The following functions are math functions used during the evaluation of the equation.
 	 */
@@ -808,7 +808,7 @@
 			return Math.log(this.result(str))/Math.log(10);
 		}
 	},//end of compute.rlog()
-	
+
 	/*
 	 * The compute.changeSign() function will take a string equation and return that same equation as a string wrapped with a negative value.
 	 */
@@ -905,7 +905,7 @@
 			return false;
 		}
 	},//end of compute.changeSign()
-	
+
 	/*
 	 * The following code is for converting between bases
 	 */
@@ -915,7 +915,7 @@
 			return (this.key.indexOf(c.toUpperCase())!=-1)?this.key.indexOf(c.toUpperCase()):false;
 		}//end of compute.baseKey.indexOf()
 	},//end of compute.baseKey{}
-	
+
 	d2b: function(n,b){//decimal to base function
 		if(typeof n!="number"||typeof b!="number")
 		{
@@ -1037,7 +1037,7 @@
 		return result;
 	}//end of compute.groupEquation()
  }//end of compute{}
- 
+
  /*
   * DEVELOPERS NOTES: HIGHLY RECOMMENDED TO READ WHEN DEVELOPING THIS LIBRARY
   * 1) Whenever you add a new function to be computed you must do 3 things for it to be correctly incorporated into this library...
@@ -1070,15 +1070,15 @@ v0.3-0.4 10/28/2010
 
 v0.2-0.3 10/20/2010
 1.	Fixed bug where (200e-6)/(2.2*(10e3)) was a false positive of an improper equation.  Regular expression for
-	compute.test.e() was modified to fix bug.  Also 4e-3 and 4e+3 were false positives for flagging an improper 
+	compute.test.e() was modified to fix bug.  Also 4e-3 and 4e+3 were false positives for flagging an improper
 	equation.
 
 v0.1-v0.2 10/02/2010
-1.	Fixed bug where x/0 was not correctly handled which led to equation result inconsistencies.  Can't divide 
+1.	Fixed bug where x/0 was not correctly handled which led to equation result inconsistencies.  Can't divide
 	by zero.
-2.	Fixed bug where sin(0)^2 was not correctly handled by formatEquation function giving and incorrect 
+2.	Fixed bug where sin(0)^2 was not correctly handled by formatEquation function giving and incorrect
 	sinMath.pow((0),2) function.
-3.	Fixed bug where domain of ln(x) was not properly handled producing and inconsistent NaN result from 
+3.	Fixed bug where domain of ln(x) was not properly handled producing and inconsistent NaN result from
 	compute.result function.
 4.	Fixed bug where 2^3^2 (multiple levels of powers) were not correctly calculating.
  */
