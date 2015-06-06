@@ -1,19 +1,35 @@
-ABOUT THE COMPUTE OBJECT
-The compute object was created from all of the math capabilities of the Scientific Calculator Web UI 1.3.2 and packed into
-a single, easy to integrate, JavaScript object which can be used by other web applications.  I like to call it a human
-readable math library and interpreter.  Basically it takes an equation as a string and then reformats it in such a way
-the JavaScript math engine can interpret it.  I put a lot of work into this so I hope someone finds a use for it.  I feel
-it provides something that web calculators currently lack: an easy to use and powerful math interpreter for real world
-users.
+# JavaScript Human Readable Math Library
 
-INTEGRATING INTO WEB APPLICATIONS
-See the function and settings documentation on the compute.result() function.
+* Project Status: Abandoned in 2010
 
-It is recommended to integrate the compacted version of the compute object into your web applications.  Please remember
-that you must leave the copyright notices and documentation intact in order to use the compute object in your web
+This library converts human readable equation strings into JavaScript function
+calls.  This is one of my earliest projects that I've migrated from sourceforge
+to GitHub for archival purposes.  It was created in 2010.  What follows is a
+description from the original `README.txt`.
+
+# About the compute object
+
+The compute object was created from all of the math capabilities of the
+Scientific Calculator Web UI 1.3.2 and packed into a single, easy to integrate,
+JavaScript object which can be used by other web applications.  I like to call
+it a human readable math library and interpreter.  Basically it takes an
+equation as a string and then reformats it in such a way the JavaScript math
+engine can interpret it.  I put a lot of work into this so I hope someone finds
+a use for it.  I feel it provides something that web calculators currently lack:
+an easy to use and powerful math interpreter for real world users.
+
+# Integrating into web applications
+
+See the function and settings documentation on the `compute.result()` function.
+
+It is recommended to integrate the compacted version of the compute object into
+your web applications.  Please remember that you must leave the copyright
+notices and documentation intact in order to use the compute object in your web
 applications.  A small price to pay for such a great library!
 
-FUNCTION AND SETTINGS DOCUMENTATION
+# Function and settings documentation
+
+```javascript
 /**
  * @author Sam Gleske (sag47@drexel.edu|sam.mxracer@gmail.com)
  * @copyright 2005-2010 Sam Gleske
@@ -22,12 +38,15 @@ FUNCTION AND SETTINGS DOCUMENTATION
  * @created 05/06/2010
  * @version 0.3
  * @description
- *     compute object is an interpreter.  It takes a mathematical string and formats it so that the JavaScript math engine
- *     can process it, calculating a result.  I like to refer to the mathematical string as containing human readable math
- *     computational functions such as pi, tan, and exponentials x^y.  This is a single object so that integration into
- *     web applications is seamless and simple.
+ *     compute object is an interpreter.  It takes a mathematical string and
+ *     formats it so that the JavaScript math engine can process it, calculating
+ *     a result.  I like to refer to the mathematical string as containing human
+ *     readable math computational functions such as pi, tan, and exponentials
+ *     x^y.  This is a single object so that integration into web applications
+ *     is seamless and simple.
  *
- *     Examples of human readable computations this library can handle that are unique to this library:
+ *     Examples of human readable computations this library can handle that are
+ *     unique to this library:
  *         compute.result("2^3") returns 8
  *         compute.result("16^(1/2)") returns 4
  *
@@ -144,3 +163,4 @@ FUNCTION AND SETTINGS DOCUMENTATION
  *             When doing a base conversion equation return the letters in all caps when set to true.  For example
  *             when set to true compute.d2b(45) returns 2D instead of 2d.
  */
+```
