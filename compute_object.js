@@ -4,7 +4,7 @@
  * @link http://www.gleske.net/
  * @link http://www.sourceforge.net/projects/webtechtools/
  * @created 05/06/2010
- * @version 0.4
+ * @version 0.5
  * @description 
  *     compute object is an interpreter.  It takes a mathematical string and formats it so that the JavaScript math engine
  *     can process it, calculating a result.  I like to refer to the mathematical string as containing human readable math
@@ -58,11 +58,12 @@
  *             
  *     compute.changeSign(str); str typeof="string"; returns typeof="string" or returns false
  *         Description:
- *             Takes a string equation and returns that same equation as a string wrapped with a negative value.
+ *             Takes a string equation and returns that same equation as a string wrapped with a negative value.  Toggles.
  *         Example usage:
  *             compute.changeSign("-(5+5)+3^2") returns "-(-(5+5)+3^2)"
  *             compute.changeSign("5") returns "-5"
  *             compute.changeSign("-(5+5)") returns "5+5"
+ *             compute.changeSign("5+5") returns "-(5+5)"
  * 
  *     compute.roundFloat(num,float); num typeof="number",float typeof="number"; returns typeof="number"
  *         Description:
@@ -94,6 +95,13 @@
  *         Example usage:
  *             compute.b2d("2D",16) returns 45
  *             compute.b2d("55",8) returns 45
+ *             
+ *     compute.groupEquation(str); str typeof="string"; returns typeof="string" or returns false
+ *         Description:
+ *             Takes a string equation and returns that same equation as a string wrapped with parens.  Toggles.
+ *         Example usage:
+ *             compute.groupEquation("5+5") returns "(5+5)"
+ *             compute.groupEquation("(5+5)") returns "5+5"
  * 
  * @SETTINGS documentation format
  *     compute.setting; typeof; default value
@@ -138,11 +146,11 @@
  	 * This is a list of settings for the compute object
  	 * These are easily configurable for simple integration into other applications.
  	 */
-	caseInsensitive: true,
-	debug: false,
-	degreesMode: true,
-	showErrors: true,
-	upperCaseBase: true,
+	caseInsensitive: true,//end of compute.caseInsensitive
+	debug: false,//end of compute.debug
+	degreesMode: true,//end of compute.degreesMode
+	showErrors: true,//end of compute.showErrors
+	upperCaseBase: true,//end of compute.upperCaseBase
 	
  	/*
  	 * This is a list of global object values such as arrays, constants, etc.
@@ -285,7 +293,7 @@
 			else if(str.charAt(c+1)!='>')
 				return false;
 			return this.check_greaterthan(str.substring(c+2));
-		},//end of compute.check_greeterthan()
+		},//end of compute.test.check_greaterthan()
 		check_lessthan:function(str){//check for shift left bitwise operators
 			var c=str.indexOf('<');
 			if(c==-1)
@@ -293,7 +301,7 @@
 			else if(str.charAt(c+1)!='<')
 				return false;
 			return this.check_lessthan(str.substring(c+2));
-		},//end of compute.test.check_lessthan())
+		},//end of compute.test.check_lessthan()
 		check_denominator:function(str){//check for instances of x/0 and flag them
 			var denominator;
 			if(str.indexOf('/')==-1)
@@ -902,7 +910,7 @@
 	 * The following code is for converting between bases
 	 */
 	baseKey:{
-		key: "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ",
+		key: "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ", //end of compute.baseKey.key
 		indexOf:function(c){
 			return (this.key.indexOf(c.toUpperCase())!=-1)?this.key.indexOf(c.toUpperCase()):false;
 		}//end of compute.baseKey.indexOf()
@@ -1002,8 +1010,32 @@
 			fact*=b;
 		}
 		return done;
-	}//end of compute.b2d()
-	
+	},//end of compute.b2d()
+	groupEquation:function(str){
+		if(typeof str!="string")
+		{
+			str=str.toString();
+		}
+		var result,tmp=this.showErrors;
+		if(this.result(str))
+		{
+			this.showErrors=false;
+			if((str.charAt(0) == '(' && str.charAt(str.length-1) == ')') && this.result(str.substr(1,str.length-2)))
+			{
+				result = str.substr(1,str.length-2);
+			}
+			else
+			{
+				result = '(' + str + ')';
+			}
+			this.showErrors=tmp;
+		}
+		else
+		{
+			result = false;
+		}
+		return result;
+	}//end of compute.groupEquation()
  }//end of compute{}
  
  /*
@@ -1013,12 +1045,20 @@
   *    2nd you must test for the function in the compute.test{} object to ensure there can be no syntax errors.
   *    3rd you must correctly parse and reformat the function for evaluating through the compute.formatEquation() function.
   *    If you do not account for all three of those things then this library will quickly degrade in quality and not function well.
+  *
+  * 2) If you decide to rename the compute object away from compute then you must go into the compute.test.check_denominator()
+  *    function and change the usage of compute.result() to whatever the new name of the object is.  Otherwise the functions of the
+  *    compute object will possibly degrade into an unusable state.
   */
 
 /*
 ChangeLog
 05/06/2010 (mm/dd/yyyy) is when initial creation of this object began.
 05/17/2010 (mm/dd/yyyy) is when the public source of this object is released.
+
+v0.4-0.5 11/09/2010
+1.	Added compute.groupEquation().  compute.groupEquation("ln(3)+3") returns "(ln(3)+3)".  This way further
+	operations can be applied to the whole equation.
 
 v0.3-0.4 10/28/2010
 1.	Finished commenting end of functions and objects so that a function map can easily be generated.

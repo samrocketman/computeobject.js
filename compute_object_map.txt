@@ -21,6 +21,7 @@ compute{}
   cos()
   d2b()
   formatEquation()
+  groupEquation()
   ln()
   result()
   rlog()

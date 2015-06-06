@@ -2,6 +2,10 @@ ChangeLog
 05/06/2010 (mm/dd/yyyy) is when initial creation of this object began.
 05/17/2010 (mm/dd/yyyy) is when the public source of this object is released.
 
+v0.4-0.5 11/09/2010
+1.	Added compute.groupEquation().  compute.groupEquation("ln(3)+3") returns "(ln(3)+3)".  This way further
+	operations can be applied to the whole equation.
+
 v0.3-0.4 10/28/2010
 1.	Finished commenting end of functions and objects so that a function map can easily be generated.
 2.	Fixed bug in regex in compute.test.check_denominator() which caused compute.result() false positive detect
