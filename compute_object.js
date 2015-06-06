@@ -4,24 +4,25 @@
  * @link http://www.gleske.net/
  * @link http://www.sourceforge.net/projects/webtechtools/
  * @created 05/06/2010
- * @version 0.1
+ * @version 0.3
  * @description 
- *     compute object, where all of the human readable math computational functions are done inside of a single object.
- *     This is compacted into a single object so it is easy to rename when incorporating this library into an application.
- *     Simply feed this object a human readable computational string and it will return a result of the calculations.
- *     With extensive equation error checking this JavaScript math library is one of the best for human readable web 
- *     calculators.
+ *     compute object is an interpreter.  It takes a mathematical string and formats it so that the JavaScript math engine
+ *     can process it, calculating a result.  I like to refer to the mathematical string as containing human readable math
+ *     computational functions such as pi, tan, and exponentials x^y.  This is a single object so that integration into 
+ *     web applications is seamless and simple.
  *     
  *     Examples of human readable computations this library can handle that are unique to this library:
  *         compute.result("2^3") returns 8
  *         compute.result("16^(1/2)") returns 4
+ *
+ *     See the full documentation and all possible human readable functions in the non-compact version of the compute object.
  *     
  *     If you are using the value of an input element then it is best to convert the value to a string before computing the
  *     result.  For example
- *         compute.result(document.getElementById("myElementId").value.toString())
+ *         document.getElementById("myElementId").value = compute.result(document.getElementById("myElementId").value.toString());
  * 
  * @documentation
- * FUNCTION documentation format...
+ * @FUNCTION documentation format...
  *     compute.function(argument); argument types separated by commas; return type
  *         Description:
  *             description of the functions uses.
@@ -94,7 +95,7 @@
  *             compute.b2d("2D",16) returns 45
  *             compute.b2d("55",8) returns 45
  * 
- * SETTINGS documentation format
+ * @SETTINGS documentation format
  *     compute.setting; typeof; default value
  *         Description:
  *             description of what the setting changes
@@ -378,7 +379,7 @@
 			{
 				return true;
 			}
-			else if(!this.regex(str.charAt(c+1),/[0-9\^]/i))
+			else if(!this.regex(str.charAt(c+1),/[0-9\^\-\+]/i))
 			{
 				return false;
 			}
@@ -1019,10 +1020,18 @@ ChangeLog
 05/06/2010 is when initial creation of this object began.
 05/17/2010 is when the public source of this object is released.
 
+v0.2-0.3 10/20/2010
+1.	Fixed bug where (200e-6)/(2.2*(10e3)) was a false positive of an improper equation.  Regular expression for
+	compute.test.e() was modified to fix bug.  Also 4e-3 and 4e+3 were false positives for flagging an improper 
+	equation.
+
 v0.1-v0.2 10/02/2010 (mm/dd/yyyy)
-1.	Fixed bug where x/0 was not correctly handled which led to equation result inconsistencies.  Can't divide by zero.
-2.	Fixed bug where sin(0)^2 was not correctly handled by formatEquation function giving and incorrect sinMath.pow((0),2) function.
-3.	Fixed bug where domain of ln(x) was not properly handled producing and inconsistent NaN result from compute.result function.
+1.	Fixed bug where x/0 was not correctly handled which led to equation result inconsistencies.  Can't divide 
+	by zero.
+2.	Fixed bug where sin(0)^2 was not correctly handled by formatEquation function giving and incorrect 
+	sinMath.pow((0),2) function.
+3.	Fixed bug where domain of ln(x) was not properly handled producing and inconsistent NaN result from 
+	compute.result function.
 4.	Fixed bug where 2^3^2 (multiple levels of powers) were not correctly calculating.
 
  */
