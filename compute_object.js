@@ -4,7 +4,7 @@
  * @link http://www.gleske.net/
  * @link http://www.sourceforge.net/projects/webtechtools/
  * @created 05/06/2010
- * @version 0.3
+ * @version 0.4
  * @description 
  *     compute object is an interpreter.  It takes a mathematical string and formats it so that the JavaScript math engine
  *     can process it, calculating a result.  I like to refer to the mathematical string as containing human readable math
@@ -245,7 +245,7 @@
 				&&this.checktrig(str)
 				&&this.regex(str, /[0-9lpesincotag\(\)\+\-\.\*\/\^<>%]/i)
 			);
-		},
+		},//end of compute.test.checkall()
 		regex:function(n,re){//test the string against a general regular expression, character by character
 			if(typeof n!="string")
 			{
@@ -262,7 +262,7 @@
 				i++;
 			}
 			return result;
-		},
+		},//end of compute.test.regex()
 		checktrig:function(str){//check all trig functions to ensure they are spelled correctly
 			return (
 				this.sin(str)
@@ -277,7 +277,7 @@
 				&&this.logs(str)
 				&&this.e(str)
 			);
-		},
+		},//end of compute.test.checktrig()
 		check_greaterthan:function(str){//check for shift right bitwise operators
 			var c=str.indexOf('>');
 			if(c==-1)
@@ -285,7 +285,7 @@
 			else if(str.charAt(c+1)!='>')
 				return false;
 			return this.check_greaterthan(str.substring(c+2));
-		},
+		},//end of compute.check_greeterthan()
 		check_lessthan:function(str){//check for shift left bitwise operators
 			var c=str.indexOf('<');
 			if(c==-1)
@@ -293,7 +293,7 @@
 			else if(str.charAt(c+1)!='<')
 				return false;
 			return this.check_lessthan(str.substring(c+2));
-		},
+		},//end of compute.test.check_lessthan())
 		check_denominator:function(str){//check for instances of x/0 and flag them
 			var denominator;
 			if(str.indexOf('/')==-1)
@@ -323,7 +323,7 @@
 				}
 				if(this.regex(str.charAt(i),/[\+\-\*\/\)><%]/i)&&j<=0)
 				{
-					denominator=(str.charAt(str.indexOf('/')+1)=='(')?str.substring(str.indexOf('/')+1,i+1):(str.substring(str.indexOf('/')+1,i+1).match(/^[lpesincotag]{2,3}\(.*/i))?str.substring(str.indexOf('/')+1,i+1):str.substring(str.indexOf('/')+1,i);//this groups all of the characters after the / together and stores it in denominator variable
+					denominator=(str.charAt(str.indexOf('/')+1)=='(')?str.substring(str.indexOf('/')+1,i+1):(str.substring(str.indexOf('/')+1,i+1).match(/^[lpesincotag]{1,3}[\^]{0,1}\(.*/i))?str.substring(str.indexOf('/')+1,i+1):str.substring(str.indexOf('/')+1,i);//this groups all of the characters after the / together and stores it in denominator variable
 					exit=true;
 				}
 				i++;
@@ -345,7 +345,7 @@
 			{
 				return this.check_denominator(str.substring(str.indexOf('/')+1));
 			}
-		},
+		},//end of compute.test.check_denominator()
 		
 		//these functions are used by this.checktrig()
 		pi:function(str){
@@ -360,7 +360,7 @@
 			}
 			
 			return this.pi(str.substring(c+2));//recursive pi
-		},
+		},//end of compute.test.pi()
 		logs:function(str){//tests for ln() and log() functions
 			var c=str.indexOf('l');
 			if(c==-1)
@@ -372,7 +372,7 @@
 				return false;
 			}
 			return (str.charAt(c+1)=='n')?this.logs(str.substring(c+3)):this.logs(str.substring(c+4));//recursive logs
-		},
+		},//end of compute.test.logs()
 		e:function(str){//tests for the format of e as e^x exponential or scientific xey where x and y are likely integers or ratios of integers (doubles)
 			var c=str.indexOf('e');
 			if(c==-1)
@@ -384,7 +384,7 @@
 				return false;
 			}
 			return this.e(str.substring(c+1));//recursive e
-		},
+		},//end of compute.test.e()
 		sin:function(str){//check for sin but make sure the 's' of sin is not the end of cos so it doesn't improperly fail the test
 			var c=str.indexOf('s');
 			if(c==-1)
@@ -397,7 +397,7 @@
 			}
 			
 			return (str.charAt(c-2)=='c')?this.sin(str.substring(c+2)):this.sin(str.substring(c+4));//recursive sin and ensure not taking a substring of cos( incorrectly
-		},
+		},//end of compute.test.sin()
 		cos:function(str){
 			var c=str.indexOf('c');
 			if(c==-1)
@@ -410,7 +410,7 @@
 			}
 			
 			return this.cos(str.substring(c+4));//recursive cos
-		},
+		},//end of compute.test.cos()
 		tan:function(str){
 			var c=str.indexOf('t');
 			if(c==-1)
@@ -423,7 +423,7 @@
 			}
 			
 			return this.tan(str.substring(c+4));//recursive tan
-		},
+		},//end of compute.test.tan()
 		check_a:function(str){//tests for acos, asin, and atan
 			var c=str.indexOf('a');
 			if(c==-1)
@@ -436,7 +436,7 @@
 			}
 			
 			return this.check_a(str.substring(c+1));//recursive check_a
-		},
+		},//end of compute.test.check_a()
 		check_g:function(str){//check every 'g' in the equation and ensure it is part of a function such as log
 			var c=str.indexOf('g');
 			if(c==-1)
@@ -448,7 +448,7 @@
 				return false;
 			}
 			return this.check_g(str.substring(c+1));//recursive check_g
-		},
+		},//end of compute.test.check_g()
 		check_i:function(str){//check every 'i' in the equation and ensure it is part of a function such as pi or sin
 			var c=str.indexOf('i');
 			if(c==-1)
@@ -460,7 +460,7 @@
 				return false;
 			}
 			return this.check_i(str.substring(c+1));//recursive check_i
-		},
+		},//end of compute.test.check_i()
 		check_n:function(str){//check every 'n' in the equation and ensure it is part of a function such as sin, tan, or ln
 			var c=str.indexOf('n');
 			if(c==-1)
@@ -472,7 +472,7 @@
 				return false;
 			}
 			return this.check_n(str.substring(c+1));//recursive check_n
-		},
+		},//end of compute.test.check_n()
 		check_o:function(str){//check every 'o' in the equation and ensure it is part of a function such as cos
 			var c=str.indexOf('o');
 			if(c==-1)
@@ -484,7 +484,7 @@
 				return false;
 			}
 			return this.check_o(str.substring(c+1));//recursive check_o
-		}
+		}//end of compute.test.check_o()
 	},//end of compute.test{}
 	
 	/*
@@ -785,7 +785,7 @@
 			return Math.log(this.result(str));
 		}
 
-	},
+	},//end of compute.ln()
 	rlog:function(str){//calculate the root base 10 logarithmic function.
 		if(this.result(str)<=0)
 		{
@@ -862,7 +862,7 @@
 				{
 					try
 					{
-						eval(str.substring(2,str.length-1));
+						eval(this.formatEquation(str.substring(2,str.length-1)));
 					}
 					catch(e)
 					{
@@ -905,7 +905,7 @@
 		key: "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ",
 		indexOf:function(c){
 			return (this.key.indexOf(c.toUpperCase())!=-1)?this.key.indexOf(c.toUpperCase()):false;
-		}
+		}//end of compute.baseKey.indexOf()
 	},//end of compute.baseKey{}
 	
 	d2b: function(n,b){//decimal to base function
@@ -1002,7 +1002,7 @@
 			fact*=b;
 		}
 		return done;
-	}
+	}//end of compute.b2d()
 	
  }//end of compute{}
  
@@ -1017,15 +1017,23 @@
 
 /*
 ChangeLog
-05/06/2010 is when initial creation of this object began.
-05/17/2010 is when the public source of this object is released.
+05/06/2010 (mm/dd/yyyy) is when initial creation of this object began.
+05/17/2010 (mm/dd/yyyy) is when the public source of this object is released.
+
+v0.3-0.4 10/28/2010
+1.	Finished commenting end of functions and objects so that a function map can easily be generated.
+2.	Fixed bug in regex in compute.test.check_denominator() which caused compute.result() false positive detect
+	1/e^(1) as dividing by zero including all x/e^(y).
+3.	Fixed bug in compute.changeSign() where -(2*ln(3)) returned -(-(2*ln(3))) when it SHOULD return 2*ln(3).
+	This happened with all trig functions.
+
 
 v0.2-0.3 10/20/2010
 1.	Fixed bug where (200e-6)/(2.2*(10e3)) was a false positive of an improper equation.  Regular expression for
 	compute.test.e() was modified to fix bug.  Also 4e-3 and 4e+3 were false positives for flagging an improper 
 	equation.
 
-v0.1-v0.2 10/02/2010 (mm/dd/yyyy)
+v0.1-v0.2 10/02/2010
 1.	Fixed bug where x/0 was not correctly handled which led to equation result inconsistencies.  Can't divide 
 	by zero.
 2.	Fixed bug where sin(0)^2 was not correctly handled by formatEquation function giving and incorrect 
@@ -1033,5 +1041,4 @@ v0.1-v0.2 10/02/2010 (mm/dd/yyyy)
 3.	Fixed bug where domain of ln(x) was not properly handled producing and inconsistent NaN result from 
 	compute.result function.
 4.	Fixed bug where 2^3^2 (multiple levels of powers) were not correctly calculating.
-
  */

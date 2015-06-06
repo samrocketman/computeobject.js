@@ -1,0 +1,50 @@
+Map Key:
+  Objects end with {}
+    Variables start with -
+    Array variables start with - and end with []
+    functions end with ()
+  All indented variables, arrays, and functions are part of preceding objects.
+
+
+compute{}
+  -caseInsensitive
+  -debug
+  -degreesMode
+  -general_error[]
+  -showErrors
+  -upperCaseBase
+  acos()
+  asin()
+  atan()
+  b2d()
+  changeSign()
+  cos()
+  d2b()
+  formatEquation()
+  ln()
+  result()
+  rlog()
+  roundFloat()
+  sin()
+  tan()
+compute.baseKey{}
+  -key
+  indexOf()
+compute.test{}
+  check_a()
+  check_denominator()
+  check_g()
+  check_greaterthan()
+  check_i()
+  check_lessthan()
+  check_n()
+  check_o()
+  checkall()
+  checktrig()
+  cos()
+  e()
+  logs()
+  pi()
+  regex()
+  sin()
+  tan()
