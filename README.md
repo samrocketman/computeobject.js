@@ -1,11 +1,14 @@
 # JavaScript Human Readable Math Library
 
 * Project Status: Abandoned in 2010 migrated from [SourceForge][sf.net]
+* License: [MIT](LICENSE.txt)
 
 This library converts human readable equation strings into JavaScript function
 calls.  This is one of my earliest projects that I've migrated from sourceforge
 to GitHub for archival purposes.  It was created in 2010.  What follows is a
 description from the original `README.txt`.
+
+To see a project using this check out [Scientific Calculator Web UI][firecalc].
 
 # About the compute object
 
@@ -165,4 +168,5 @@ applications.  A small price to pay for such a great library!
  */
 ```
 
+[firecalc]: https://github.com/samrocketman/firecalc
 [sf.net]: https://sourceforge.net/projects/webtechtools/files/JavaScript%20Human%20Readable%20Math%20Library/
